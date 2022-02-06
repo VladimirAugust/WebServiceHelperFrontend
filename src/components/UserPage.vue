@@ -45,7 +45,7 @@ export default ({
           "Content-Type": "application/json",
         }, this.auth_header)
       )
-      this.response = await fetch("http://127.0.0.1:8000/api/user/" + this.username, {
+      this.response = await fetch(this.$api_host+"api/user/" + this.username, {
         method: 'GET',
         headers: Object.assign({
           "Content-Type": "application/json",

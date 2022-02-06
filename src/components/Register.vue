@@ -39,7 +39,7 @@ export default {
   methods: {
     async register() {
       this.hash = this.$route.params.hash
-      this.response = await fetch("http://127.0.0.1:8000/api/register", {
+      this.response = await fetch(this.$api_host+"api/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -68,7 +68,7 @@ export default {
       }
 
       this.hash = this.$route.params.hash
-      this.response = await fetch("http://127.0.0.1:8000/api/registerPage", {
+      this.response = await fetch(this.$api_host+"api/registerPage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

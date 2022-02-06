@@ -74,7 +74,7 @@ export default {
     async get_user_data(){
       if (localStorage.token){
         this.token = localStorage.token
-        this.response = await fetch("http://127.0.0.1:8000/api/profile", {
+        this.response = await fetch(this.$api_host + "api/profile", {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",

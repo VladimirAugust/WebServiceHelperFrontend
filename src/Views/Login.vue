@@ -29,7 +29,7 @@ export default {
       }
       this.email = document.getElementById("InputEmail").value
       this.password = document.getElementById("InputPassword").value
-      this.response = await fetch("http://127.0.0.1:8000/api/login", {
+      this.response = await fetch(this.$api_host+"api/login", {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
