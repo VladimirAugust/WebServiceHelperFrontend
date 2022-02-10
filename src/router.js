@@ -4,6 +4,7 @@ import Register from './components/Register'
 import PageNotFound from './Views/NotFoundPage'
 import Login from './Views/Login'
 import UserPage from './components/UserPage'
+import UserSettingsPage from './components/UserSettingsPage'
 
 Vue.use(Router)
 
@@ -25,9 +26,14 @@ export default new Router({
             name: "UserPage"
         },
         {
+            path: '/settings',
+            component: UserSettingsPage,
+            name: "User settings"
+        },
+        {
             path: '/:pathMatch(.*)*',
             component: PageNotFound,
             name: "PageNotFound"
-        }
+        },
     ]
 })

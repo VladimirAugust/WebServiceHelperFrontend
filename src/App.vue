@@ -24,8 +24,8 @@
                     {{ user_data["username"] }}
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#">Мой профиль</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" :href="'user/' + user_data.username">Мой профиль</a></li>
+                    <li><a class="dropdown-item" :href="">Another action</a></li>
                     <!-- <li><a class="dropdown-item" href="#" v-on:click="logout">Выйти</a></li> -->
                   </ul>
                 </div>
@@ -36,7 +36,7 @@
       </nav>
     </header>
     <router-view v-on:LoginAuth="on_auth($event)"/>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -133,4 +133,7 @@ export default {
 .username-btn {
   margin-right: 2rem;
 }
+
+
+
 </style>
