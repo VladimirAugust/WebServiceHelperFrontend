@@ -55,6 +55,7 @@ export default {
       if (await this.response.status === 200){
         localStorage.token = this.response_json["token"]
         this.$emit("LoginAuth")
+        this.$router.push("/settings")
     
       }
       else{

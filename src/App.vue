@@ -36,7 +36,7 @@
       </nav>
     </header>
     <router-view v-on:LoginAuth="on_auth($event)"/>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -133,4 +133,7 @@ export default {
 .username-btn {
   margin-right: 2rem;
 }
+
+
+
 </style>

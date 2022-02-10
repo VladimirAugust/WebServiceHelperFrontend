@@ -8,33 +8,29 @@
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Profile Settings</h4>
+                    <h4 class="text-right">Общие настройки</h4>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" id="FirstNameInput" placeholder="first name" value=""></div>
                     <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" id="LastNameInput" value="" placeholder="surname"></div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Mobile Number</label><span class="required">*</span><input type="tel" id="telInput" data-tel-input class="form-control" placeholder="enter phone number" value=""></div>
-                    <div class="col-md-12"><label class="labels">Город</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш город" id="CityInput" value=""></div>
-                    <div class="col-md-12"><label class="labels">Район</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш район" id="DiscrictInput" value=""></div>
-                    <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value=""></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
-                    <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
+                    <div class="col-md-12" id="phone_number"><label class="labels">Mobile Number</label><span class="required">*</span><input type="tel" id="telInput" data-tel-input class="form-control" placeholder="enter phone number" value=""></div>
+                    <div class="col-md-12" id="city"><label class="labels">Город</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш город" id="CityInput" value=""></div>
+                    <div class="col-md-12" id="district"><label class="labels">Район</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш район" id="DiscrictInput" value=""></div>
                 </div>
                 <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" v-on:click="change_settings">Save Profile</button></div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="text-right" style="text-align: center;">Настройки Пользователя</h4></div>
                 <div class="row mt-2">
-                    <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span></div>
-                    <div class="col-md-6"><label class="labels">Password</label><input type="text" class="form-control" placeholder="password" value=""></div>
-                    <div class="col-md-6"><label class="labels">New Password</label><input type="text" class="form-control" value="" placeholder="new password"></div>
-                    <div class="d-flex justify-content-center mt-4 align-items-center experience "><span class="border px-3 p-1 add-experience">Изменить пароль</span></div><br>
+                    <div class="col-md-6"><label class="labels">Password</label><input type="text" class="form-control" placeholder="password" id="old_password" value=""></div>
+                    <div class="col-md-6"><label class="labels">New Password</label><input type="text" class="form-control" value="" id="new_password" placeholder="new password"></div>
+                    
                 </div>
+                <div class="d-flex justify-content-center mt-4 align-items-center experience "><span class="border px-3 p-1 add-experience" v-on:click="change_password">Изменить пароль</span></div><br>
             </div>
         </div>
     </div>
@@ -131,6 +127,27 @@ export default ({
     }
     },
     methods: {
+        async change_password() {
+            var old_password = document.getElementById("old_password").value
+            var new_password = document.getElementById("new_password").value
+
+            var response = await fetch(this.$api_host+"api/password/change", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + localStorage.token
+                },
+                body: JSON.stringify({
+                    "old_password": old_password,
+                    "new_password": new_password
+                })
+            })
+
+            if (await response.status === 200){
+                alert("Password succesefuly changed")
+            }
+        },
+
         async load_settings() {
             var response = await fetch(this.$api_host+"api/user/settings", {
                 method: "GET",
@@ -179,12 +196,31 @@ export default ({
                     "last_name": last_name
                 })
             })
-
-            if (await response.status === 200){
+            
+            var status = await response.status
+            if (status === 200){
                 this.$router.go(this.$router.currentRoute)
-            } else {
-                console.log(await response.json())
+            } else if (status === 400){
+                var data = await response.json()
+                for (const [key, value] of Object.entries(data)){
+                    console.log(key)
+                    var block = document.getElementById(key)
+                    console.log(block)
+                    block.getElementsByTagName("input")[0].classList.add("is-invalid")
+                    block.getElementsByTagName("label")[0].classList.add("text-danger")
+                    var helpTexts = block.getElementsByTagName("small")
+                    if (helpTexts.length === 0){
+                        console.log(helpTexts.length)
+                        var helpText = document.createElement("small")
+                        helpText.innerHTML = '<small id="passwordHelp" class="text-danger">'+value+'</small>'
+                        block.appendChild(helpText);
+                    }else {
+                        helpTexts[0].value = value
+                    }
+                }
+
             }
+
         }
     }
 })
