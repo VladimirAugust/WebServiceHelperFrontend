@@ -61,7 +61,8 @@ export default {
                 helpText.innerHTML = '<small id="passwordHelp" class="text-danger">'+value+'</small>'
                 block.appendChild(helpText);
             }else {
-                helpTexts[0].value = value
+                helpTexts[0].innerText = value
+                helpTexts[0].classList.add("text-danger")
             }
         }
       }
