@@ -24,8 +24,8 @@
                     {{ user_data["username"] }}
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" :href="'user/' + user_data.username">Мой профиль</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" v-on:click="push_user_page">Мой профиль</a></li>
+                    <li><a class="dropdown-item" v-on:click="UserExit">Выйти</a></li>
                     <!-- <li><a class="dropdown-item" href="#" v-on:click="logout">Выйти</a></li> -->
                   </ul>
                 </div>
@@ -53,6 +53,21 @@ export default {
     await this.get_user_data()
   },
   methods: {
+    UserExit(){
+      localStorage.removeItem('token');
+      this.$router.go("/")
+    },
+    
+    push_user_page(){
+      console.log("push")
+      this.$router.push({
+        name: "UserPage",
+        params: {
+          "username": this.user_data["username"]
+        }
+      })
+    },
+
     push_login_page(){
       this.$router.push({
         "name": "LoginPage"
@@ -84,7 +99,7 @@ export default {
           await this.set_user_data(await this.response.json(), true)
         }
         else if (await this.response.status === 401){
-          localStorage.token = ""
+          localStorage.removeItem('token');
         }
       }
     }

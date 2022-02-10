@@ -26,8 +26,8 @@
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="text-right" style="text-align: center;">Настройки Пользователя</h4></div>
                 <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">Password</label><input type="text" class="form-control" placeholder="password" id="old_password" value=""></div>
-                    <div class="col-md-6"><label class="labels">New Password</label><input type="text" class="form-control" value="" id="new_password" placeholder="new password"></div>
+                    <div class="col-md-6"><label class="labels">Password</label><input type="password" class="form-control" placeholder="password" id="old_password" value=""></div>
+                    <div class="col-md-6"><label class="labels">New Password</label><input type="password" class="form-control" value="" id="new_password" placeholder="new password"></div>
                     
                 </div>
                 <div class="d-flex justify-content-center mt-4 align-items-center experience "><span class="border px-3 p-1 add-experience" v-on:click="change_password">Изменить пароль</span></div><br>
@@ -149,7 +149,7 @@ export default ({
         },
 
         async load_settings() {
-            var response = await fetch(this.$api_host+"api/user/settings", {
+            var response = await fetch(this.$api_host+"api/settings", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -182,7 +182,7 @@ export default ({
 
             console.log(city, district, phone, first_name)
 
-            var response = await fetch(this.$api_host+"api/user/settings", {
+            var response = await fetch(this.$api_host+"api/settings", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -203,9 +203,7 @@ export default ({
             } else if (status === 400){
                 var data = await response.json()
                 for (const [key, value] of Object.entries(data)){
-                    console.log(key)
                     var block = document.getElementById(key)
-                    console.log(block)
                     block.getElementsByTagName("input")[0].classList.add("is-invalid")
                     block.getElementsByTagName("label")[0].classList.add("text-danger")
                     var helpTexts = block.getElementsByTagName("small")

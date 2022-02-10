@@ -3,11 +3,11 @@
     <h2>Sign In</h2>
     <hr>
     <form @submit.prevent="login">
-      <div class="mb-3">
+      <div class="mb-3" id="email">
         <label for="InputEmail" class="form-label">Email address</label>
         <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
       </div>
-      <div class="mb-3">
+      <div class="mb-3" id="password">
         <label for="InputPassword" class="form-label">Password</label>
         <input type="password" class="form-control" id="InputPassword">
       </div>
@@ -46,9 +46,24 @@ export default {
         // await this.$router.push({
         //   name: "HomePage"
         // })
-      }
-      else {
-        console.log(this.response)
+      } else if (await this.response.status === 400){
+        var data = await this.response.json()
+        console.log(data)
+        
+        for (const [key, value] of Object.entries(data)){
+            var block = document.getElementById(key)
+            block.getElementsByTagName("input")[0].classList.add("is-invalid")
+            block.getElementsByTagName("label")[0].classList.add("text-danger")
+            var helpTexts = block.getElementsByTagName("small")
+            if (helpTexts.length === 0){
+                console.log(helpTexts.length)
+                var helpText = document.createElement("small")
+                helpText.innerHTML = '<small id="passwordHelp" class="text-danger">'+value+'</small>'
+                block.appendChild(helpText);
+            }else {
+                helpTexts[0].value = value
+            }
+        }
       }
     }
   }

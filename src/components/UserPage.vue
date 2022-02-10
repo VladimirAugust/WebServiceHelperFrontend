@@ -15,7 +15,7 @@
         <h2 class="username">{{user_data['username']}}</h2>
         <div class="user-description">{{user_data['description']}}</div>
       </div>
-      <button v-if="user_data['is_current_user']" class="btn btn-dark edit-btn">Редактировать</button>
+      <button v-if="user_data['is_current_user']" v-on:click="push_settings_page" class="btn btn-dark edit-btn">Редактировать</button>
     </div>
   </div>
 </template>
@@ -33,6 +33,12 @@ export default ({
         await this.load_user_data()
     },
     methods: {
+    push_settings_page(){
+      this.$router.push({
+        name: "User settings"
+      })
+    },
+
     async load_user_data() {
       if (localStorage.token){
         this.auth_header = {"Authorization": "Token " + localStorage.token}

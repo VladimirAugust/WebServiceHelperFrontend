@@ -3,16 +3,16 @@
     <h2 style="text-align: center">Sign Up</h2>
     <hr>
     <form @submit.prevent="register" style="margin-top: 2rem">
-      <div class="mb-3">
+      <div class="mb-3" id="email">
         <label for="InputEmail" class="form-label">Email address</label>
         <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
       </div>
-      <div class="mb-3">
+      <div class="mb-3" id="username">
         <label for="InputUsername" class="form-label">Username</label>
         <input type="text" class="form-control" id="InputUsername">
       </div>
-      <div class="mb-3">
+      <div class="mb-3" id="password">
         <label for="InputPassword" class="form-label">Password</label>
         <input type="password" class="form-control" id="InputPassword">
       </div>
@@ -57,9 +57,24 @@ export default {
         this.$emit("LoginAuth")
         this.$router.push("/settings")
     
-      }
-      else{
-      console.log(this.response_json)
+      }else if (await this.response.status === 400){
+        var data = this.response_json
+        
+        for (const [key, value] of Object.entries(data)){
+            var block = document.getElementById(key)
+            block.getElementsByTagName("input")[0].classList.add("is-invalid")
+            block.getElementsByTagName("label")[0].classList.add("text-danger")
+            var helpTexts = block.getElementsByTagName("small")
+            if (helpTexts.length === 0){
+                console.log(helpTexts.length)
+                var helpText = document.createElement("small")
+                helpText.innerHTML = '<small id="passwordHelp" class="text-danger">'+value+'</small>'
+                block.appendChild(helpText);
+            }else {
+                helpTexts[0].innerText = value
+				helpTexts[0].classList.add("text-danger")
+            }
+        }
     }},
 
     async is_link_valid() {
