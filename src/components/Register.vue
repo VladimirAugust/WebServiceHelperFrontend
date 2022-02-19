@@ -15,6 +15,7 @@
       <div class="mb-3" id="password">
         <label for="InputPassword" class="form-label">Password</label>
         <input type="password" class="form-control" id="InputPassword">
+        <span class="fa fa-fw fa-eye field-icon" id="passwordController" v-on:click="ChangePasswordVisibility"></span>
       </div>
       <button type="submit" class="btn btn-primary">Sing up</button>
       <a @click.prevent="go_login_page" style="margin-left: 2.5rem">I already have an account</a>
@@ -37,6 +38,19 @@ export default {
 
   },
   methods: {
+    ChangePasswordVisibility(){
+      var passwordController = document.getElementById("passwordController")
+      passwordController.classList.toggle("fa-eye")
+      passwordController.classList.toggle("fa-eye-slash")
+      var PasswordInput = document.getElementById("InputPassword")
+      console.log(PasswordInput)
+      if (PasswordInput.getAttribute("type") === "password"){
+        PasswordInput.setAttribute("type", "text")
+      } else {
+        PasswordInput.setAttribute("type", "password")
+      }
+    },
+
     async register() {
       this.hash = this.$route.params.hash
       this.response = await fetch(this.$api_host+"api/register", {
@@ -102,5 +116,11 @@ export default {
 </script>
 
 <style scoped>
-
+.field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+}
 </style>

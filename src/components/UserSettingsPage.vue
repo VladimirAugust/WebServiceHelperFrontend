@@ -4,6 +4,10 @@
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" :src="userData['avatar']" ><span class="font-weight-bold">{{userData["username"]}}</span><span class="text-black-50">{{userData["email"]}}</span><span> </span></div>
+            <div class="input-group">
+        <input class="form-control" type="file" id="formFileMultiple" accept="image/*" multiple>
+        </div>
+        <button class="btn btn-dark edit-btn mt-3" v-on:click="change_avatar">Изменить</button> 
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
@@ -14,7 +18,7 @@
                     <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" id="FirstNameInput" placeholder="first name" value=""></div>
                     <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" id="LastNameInput" value="" placeholder="surname"></div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3"> 
                     <div class="col-md-12" id="phone_number"><label class="labels">Mobile Number</label><span class="required">*</span><input type="tel" id="telInput" data-tel-input class="form-control" placeholder="enter phone number" value=""></div>
                     <div class="col-md-12" id="city"><label class="labels">Город</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш город" id="CityInput" value=""></div>
                     <div class="col-md-12" id="district"><label class="labels">Район</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш район" id="DiscrictInput" value=""></div>
@@ -127,6 +131,25 @@ export default ({
     }
     },
     methods: {
+        async change_avatar(){
+            var fileInput = document.getElementById("formFileMultiple")
+            var formData = new FormData()
+            formData.append('avatar', fileInput.files[0])
+            for (var [key, value] of formData.entries()) {
+            console.log(key, value);
+            }
+            var response = await fetch(this.$api_host+"api/image/upload", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+                    "Authorization": "Token " + localStorage.token
+                },
+                body: formData
+            })
+            console.log(await response.json())
+        },
+
         async change_password() {
             var old_password = document.getElementById("old_password").value
             var new_password = document.getElementById("new_password").value
@@ -134,7 +157,7 @@ export default ({
             var response = await fetch(this.$api_host+"api/password/change", {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'text/plain; charset=UTF-8',
                     "Authorization": "Token " + localStorage.token
                 },
                 body: JSON.stringify({
