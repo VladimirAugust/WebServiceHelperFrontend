@@ -12,11 +12,30 @@
       </div>
 
       <div class="user-info">
-        <h2 class="username">{{user_data['username']}}</h2>
+        <h2 class="username">{{user_data['first_name']}}</h2>
         <div class="user-description">{{user_data['description']}}</div>
       </div>
       <button v-if="user_data['is_current_user']" v-on:click="push_settings_page" class="btn btn-dark edit-btn">Редактировать</button>
+      <button v-else-if="user_data['is_current_user_moderator']" class="btn btn-dark edit-btn" data-bs-toggle="modal" data-bs-target="#ConfirmBlock">Заблокировать пользователя</button>
     </div>
+    <div class="modal fade" id="ConfirmBlock" tabindex="-1" aria-labelledby="ConfirmBlockLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ConfirmBlockLabel">Блокировка пользователя</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="reason">
+          <label for="BlockReason" class="form-label">Причина блокировки</label>
+          <textarea class="form-control" id="BlockReason" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <button type="button" class="btn btn-danger" v-on:click="block">Заблокировать</button>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -25,7 +44,6 @@ export default ({
     name: "UserPage",
     data() {
         return {
-        username: "",
         user_data: "",
 }
     },
@@ -39,6 +57,43 @@ export default ({
       })
     },
 
+    async block() {
+      this.pk = this.$route.params.pk
+      this.response = await fetch(this.$api_host+"api/user/ban", {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token " + localStorage.token
+        },
+        body: JSON.stringify({
+          "pk": this.pk,
+          "reason": document.getElementById("BlockReason").value
+        })
+      })
+      if (await this.response.status === 200){
+        this.$router.push("/home")
+      } else {
+        var data = await this.response.json()
+        console.log(data)        
+        for (const [key, value] of Object.entries(data)){
+            var block = document.getElementById(key)
+            console.log(block)
+            block.getElementsByTagName("input")[0].classList.add("is-invalid")
+            block.getElementsByTagName("label")[0].classList.add("text-danger")
+            var helpTexts = block.getElementsByTagName("small")
+            if (helpTexts.length === 0){
+                console.log(helpTexts.length)
+                var helpText = document.createElement("small")
+                helpText.innerHTML = '<small id="passwordHelp" class="text-danger">'+value+'</small>'
+                block.appendChild(helpText);
+            }else {
+                helpTexts[0].innerText = value
+                helpTexts[0].classList.add("text-danger")
+            }
+        }
+      }
+    },
+
     async load_user_data() {
       if (localStorage.token){
         this.auth_header = {"Authorization": "Token " + localStorage.token}
@@ -46,12 +101,12 @@ export default ({
       else {
         this.auth_header = {}
       }
-      this.username = this.$route.params.username
+      this.pk = this.$route.params.pk
       console.log(Object.assign({
           "Content-Type": "application/json",
         }, this.auth_header)
       )
-      this.response = await fetch(this.$api_host+"api/user/" + this.username, {
+      this.response = await fetch(this.$api_host+"api/user/" + this.pk, {
         method: 'GET',
         headers: Object.assign({
           "Content-Type": "application/json",

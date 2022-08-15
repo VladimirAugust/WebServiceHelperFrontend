@@ -63,7 +63,7 @@ export default {
       this.$router.push({
         name: "UserPage",
         params: {
-          "username": this.user_data["username"]
+          "pk": this.user_data["pk"]
         }
       })
     },
@@ -71,7 +71,7 @@ export default {
     push_login_page(){
       this.$router.push({
         "name": "LoginPage"
-      })
+      })  
     },
     
     async set_user_data(data, is_signed_up){
@@ -82,7 +82,7 @@ export default {
     async on_auth(){
       await this.get_user_data()
       this.$router.push(
-        "user/" + this.user_data["username"]
+        "user/" + this.user_data["pk"]
       )
     },
 

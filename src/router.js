@@ -11,7 +11,7 @@ Vue.use(Router)
 export default new Router({
     mode: 'history',
     routes: [{
-            path: '/register/:hash',
+            path: '/register',
             component: Register,
             name: "RegisterPage"
         },
@@ -21,7 +21,7 @@ export default new Router({
             name: "LoginPage"
         },
         {
-            path: '/user/:username',
+            path: '/user/:pk',
             component: UserPage,
             name: "UserPage"
         },

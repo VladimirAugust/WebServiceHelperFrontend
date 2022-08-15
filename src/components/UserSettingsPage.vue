@@ -26,7 +26,7 @@
                 <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" v-on:click="change_settings">Save Profile</button></div>
             </div>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="text-right" style="text-align: center;">Настройки Пользователя</h4></div>
                 <div class="row mt-2">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="d-flex justify-content-center mt-4 align-items-center experience "><span class="border px-3 p-1 add-experience" v-on:click="change_password">Изменить пароль</span></div><br>
             </div>
-        </div>
+        </div> -->
     </div>
     
 </div>
@@ -138,38 +138,37 @@ export default ({
             for (var [key, value] of formData.entries()) {
             console.log(key, value);
             }
-            var response = await fetch(this.$api_host+"api/image/upload", {
-                method: "POST",
+            await fetch(this.$api_host+"api/image/upload", {
+                method: "PATCH",
                 headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+                    // "Content-Type": "multipart/form-data",
                     "Authorization": "Token " + localStorage.token
                 },
                 body: formData
             })
-            console.log(await response.json())
+            window.location.reload();
         },
 
-        async change_password() {
-            var old_password = document.getElementById("old_password").value
-            var new_password = document.getElementById("new_password").value
+        // async change_password() {
+        //     var old_password = document.getElementById("old_password").value
+        //     var new_password = document.getElementById("new_password").value
 
-            var response = await fetch(this.$api_host+"api/password/change", {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'text/plain; charset=UTF-8',
-                    "Authorization": "Token " + localStorage.token
-                },
-                body: JSON.stringify({
-                    "old_password": old_password,
-                    "new_password": new_password
-                })
-            })
+        //     var response = await fetch(this.$api_host+"api/password/change", {
+        //         method: "PATCH",
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             "Authorization": "Token " + localStorage.token
+        //         },
+        //         body: JSON.stringify({
+        //             "old_password": old_password,
+        //             "new_password": new_password
+        //         })
+        //     })
 
-            if (await response.status === 200){
-                alert("Password succesefuly changed")
-            }
-        },
+        //     if (await response.status === 200){
+        //         alert("Password succesefuly changed")
+        //     }
+        // },
 
         async load_settings() {
             var response = await fetch(this.$api_host+"api/settings", {

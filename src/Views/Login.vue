@@ -1,68 +1,43 @@
 <template>
   <div class="container-sm" style="margin-top: 4rem">
-    <h2>Sign In</h2>
+    <h2 style="text-align: center">Регистрация</h2>
     <hr>
-    <form @submit.prevent="login">
-      <div class="mb-3" id="email">
-        <label for="InputEmail" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+    <form @submit.prevent="register" style="margin-top: 2rem">
+    <p>
+      Для авторизации вам нужно получить код в телеграм боте: <a target="_blank" rel="noopener noreferrer"  href="https://t.me/mutual_aid_info_bot">@mutual_aid_info_bot</a>
+    </p>
+      <div class="mb-3 mx-5" id="code">
+        <label for="InputCode" class="form-label">Код</label>
+        <input type="phone" class="form-control" id="InputCode" aria-describedby="codeHelp">
       </div>
-      <div class="mb-3" id="password">
-        <label for="InputPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="InputPassword">
-        <span class="fa fa-fw fa-eye field-icon" id="passwordController" v-on:click="ChangePasswordVisibility"></span>
-      </div>
-      <div style="margin-top: 2rem">
-      <button type="submit" class="btn btn-primary">Sing In</button>
-      </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
   </div>
 </template>
 
+
 <script>
 export default {
-  name: "Login",
+  name: "Register",
   methods: {
-    ChangePasswordVisibility(){
-      var passwordController = document.getElementById("passwordController")
-      passwordController.classList.toggle("fa-eye")
-      passwordController.classList.toggle("fa-eye-slash")
-      var PasswordInput = document.getElementById("InputPassword")
-      console.log(PasswordInput)
-      if (PasswordInput.getAttribute("type") === "password"){
-        PasswordInput.setAttribute("type", "text")
-      } else {
-        PasswordInput.setAttribute("type", "password")
-      }
-    },
-    
-    async login(){
-      if (typeof localStorage.token !== "undefined"){
-        alert("You're already loggined in")
-        return;
-      }
-      this.email = document.getElementById("InputEmail").value
-      this.password = document.getElementById("InputPassword").value
+    async register() {
       this.response = await fetch(this.$api_host+"api/login", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          "Content-Type": "application/json"
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({"user": {
-            "email": this.email,
-            "password": this.password
-          }
-        })})
+        body: JSON.stringify({
+          "code": document.getElementById("InputCode").value
+        })
+      })
+      this.response_json = await this.response.json()
       if (await this.response.status === 200){
-        this.response_json = await this.response.json()
+        console.log(this.response_json)
         localStorage.token = this.response_json["token"]
-        this.$emit("LoginAuth")
-        // await this.$router.push({
-        //   name: "HomePage"
-        // })
-      } else if (await this.response.status === 400){
-        var data = await this.response.json()
-        console.log(data)
+        this.$router.push("/settings")
+    
+      }else if (await this.response.status === 400){
+        var data = this.response_json
         
         for (const [key, value] of Object.entries(data)){
             var block = document.getElementById(key)
@@ -76,21 +51,10 @@ export default {
                 block.appendChild(helpText);
             }else {
                 helpTexts[0].innerText = value
-                helpTexts[0].classList.add("text-danger")
+				helpTexts[0].classList.add("text-danger")
             }
         }
-      }
-    }
+    }}
   }
 }
 </script>
-
-<style scoped>
-.field-icon {
-  float: right;
-  margin-left: -25px;
-  margin-top: -25px;
-  position: relative;
-  z-index: 2;
-}
-</style>
