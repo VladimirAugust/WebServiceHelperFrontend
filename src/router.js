@@ -5,6 +5,8 @@ import PageNotFound from './Views/NotFoundPage'
 import Login from './Views/Login'
 import UserPage from './components/UserPage'
 import UserSettingsPage from './components/UserSettingsPage'
+import MyGoodsPage from "@/Views/MyGoodsPage";
+import GoodPage from "@/Views/GoodPage";
 
 Vue.use(Router)
 
@@ -29,6 +31,21 @@ export default new Router({
             path: '/settings',
             component: UserSettingsPage,
             name: "User settings"
+        },
+        {
+            path: '/my-goods',
+            component: MyGoodsPage,
+            name: "MyGoodsPage"
+        },
+        {
+            path: '/good/:pk/:action',
+            component: GoodPage,
+            name: "GoodPageAction"
+        },
+        {
+            path: '/good/:pk',
+            component: GoodPage,
+            name: "GoodPage"
         },
         {
             path: '/:pathMatch(.*)*',

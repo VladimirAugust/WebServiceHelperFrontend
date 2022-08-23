@@ -25,6 +25,7 @@
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" v-on:click="push_user_page">Мой профиль</a></li>
+                    <li><a class="dropdown-item" v-on:click="push_user_goods">Мои товары/услуги</a></li>
                     <li><a class="dropdown-item" v-on:click="UserExit">Выйти</a></li>
                     <!-- <li><a class="dropdown-item" href="#" v-on:click="logout">Выйти</a></li> -->
                   </ul>
@@ -62,6 +63,15 @@ export default {
       console.log("push")
       this.$router.push({
         name: "UserPage",
+        params: {
+          "pk": this.user_data["pk"]
+        }
+      })
+    },
+
+    push_user_goods(){
+      this.$router.push({
+        name: "MyGoodsPage",
         params: {
           "pk": this.user_data["pk"]
         }
