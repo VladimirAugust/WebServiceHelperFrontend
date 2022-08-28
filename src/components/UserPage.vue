@@ -95,6 +95,7 @@ export default ({
     },
 
     async load_user_data() {
+      // localStorage.token = "04948fcc522779e171384c12eadef82e3b106bb6";
       if (localStorage.token){
         this.auth_header = {"Authorization": "Token " + localStorage.token}
       }

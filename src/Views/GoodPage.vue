@@ -121,7 +121,7 @@ export default {
     async load_settings() {
       this.pk = this.$route.params.pk
       this.action = this.$route.params.action
-      localStorage.token = '04948fcc522779e171384c12eadef82e3b106bb6'
+      // localStorage.token = '04948fcc522779e171384c12eadef82e3b106bb6'
       if (this.pk === 'new') {
         this.good = {
         }
