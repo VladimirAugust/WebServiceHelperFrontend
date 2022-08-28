@@ -1,13 +1,13 @@
 <template>
   <div class="container-sm" style="margin-top: 4rem">
-    <button type="button" class="btn btn-primary mb-3">Добавить товар/услугу</button>
+    <button type="button" class="btn btn-primary mb-3" @click="$router.push({name: 'GoodPageAction', params: {pk: 'new'}})">Добавить товар/услугу</button>
     <div class="list-group">
       <a v-for="good in goods" :key="good.id" v-on:click="push_good(good.id)" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">{{ good.name }}</h5>
           <small>Последнее изменение: {{ format_time(good.updated_at) }}</small>
         </div>
-        <p class="mb-1">{{ good.description }}</p>
+<!--        <p class="mb-1">{{ good.description }}</p>-->
       </a>
     </div>
   </div>

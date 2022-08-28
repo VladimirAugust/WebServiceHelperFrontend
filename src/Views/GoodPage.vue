@@ -1,6 +1,7 @@
 <template>
 
   <div class="container rounded bg-white mt-5 mb-5">
+    <button @click="$router.push({name: 'MyGoodsPage'})" class="float-start">К списку товаров</button>
         <h2>{{extra_message}}</h2>
     <table class="table">
 
@@ -53,7 +54,7 @@
                 :media_server="this.$api_host + 'api/trade/media/' + this.$route.params.pk">
             </UpdateMedia>
             <img v-else
-                 v-for="img in good.images"
+                 v-for="img in good.images_for_read"
                  :key="img"
                  :src="$api_host + 'media/' + img"
                  class="img-thumbnail"
@@ -66,6 +67,7 @@
         <button v-if="allow_edit" @click="btn_publish()">Опубликовать</button>
         <button v-if="action==='edit'" @click="btn_delete()">Удалить</button>
         <button v-if="action==='edit'" @click="btn_sold()">Отметить как проданное</button>
+        <button v-if="action==='get' && good.is_author===true" @click="open_for_edit()">Редактировать</button>
       </td></tr>
       <tr><td colspan="2"><p id="status"></p></td></tr>
 
@@ -145,7 +147,7 @@ export default {
       if (await response.status === 200){
         const data = await response.json()
         this.good = data
-        console.log(data)
+        console.log("Good data", data);
       } else if (await response.status === 401){
         await this.$router.push("/login")
       } else {
@@ -246,6 +248,13 @@ export default {
     },
     async btn_sold() {
       await this.send_good('sold');
+    },
+    async open_for_edit() {
+      await this.$router.push({name: "GoodPageAction", params: {
+          action: 'edit',
+          pk: this.pk,
+        }});
+      this.$router.go();
     },
 
     get_condition_options() {
