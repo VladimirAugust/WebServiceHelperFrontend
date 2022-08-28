@@ -2,7 +2,7 @@
 
   <div class="container rounded bg-white mt-5 mb-5">
         <h2>{{extra_message}}</h2>
-    <table>
+    <table class="table">
 
         <ModelField ref="name" label="Название" :value.sync="good.name" :editable="allow_edit" :error_text="errors.name"/>
         <ModelField label="Категория" v-bind:editable="allow_edit" :error_text="errors.category">
@@ -52,7 +52,13 @@
                 :media_file_path="this.$api_host + 'media'"
                 :media_server="this.$api_host + 'api/trade/media/' + this.$route.params.pk">
             </UpdateMedia>
-<!--            <img v-else v-for="img in good.images" :key="img" :src="$api_host + 'media/' + img">-->
+            <img v-else
+                 v-for="img in good.images"
+                 :key="img"
+                 :src="$api_host + 'media/' + img"
+                 class="img-thumbnail"
+                 style="max-height: 200px"
+            >
           </td>
         </tr>
       <tr><td colspan="2">
@@ -61,7 +67,7 @@
         <button v-if="action==='edit'" @click="btn_delete()">Удалить</button>
         <button v-if="action==='edit'" @click="btn_sold()">Отметить как проданное</button>
       </td></tr>
-      <tr><td><p id="status"></p></td></tr>
+      <tr><td colspan="2"><p id="status"></p></td></tr>
 
     </table>
 
@@ -188,13 +194,15 @@ export default {
         url += this.pk + '/'
       }
       url += "?action=" + btn_action;
+      const json_to_send = JSON.stringify(obj_to_save);
+      // console.log("JSON", json_to_send);
       const response = await fetch(url, {
         method: this.action === 'new' ? "POST" : "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Token " + localStorage.token
         },
-        body: JSON.stringify(obj_to_save)
+        body: json_to_send
       })
       console.log("Response ", response);
       if (await response.status === 200) {

@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <th><label for="id_name">{{ label }}:</label></th>
+    <th><p class="text-end">{{ label }}:</p></th>
     <td v-if="!editable">
       <p v-if="type==='select'">
         {{ options[value] }}
@@ -33,7 +33,7 @@
     <td v-else-if="type==='checkbox'">
       <input type="checkbox" v-model="value" @change="$emit('update:value', value);">
     </td>
-    <td><p>{{error_text}}</p></td>
+    <td><p class="text-danger">{{error_text}}</p></td>
   </tr>
 
 </template>

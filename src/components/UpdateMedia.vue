@@ -86,7 +86,6 @@
 </template>
 
 <script>
-//import Loader from '"vue-media-upload"/loader/index.vue';
 import axios from 'axios'
 import Loader from "@/components/loader";
 
