@@ -61,6 +61,7 @@ export default {
   },
   methods: {
     async load_settings() {
+      // localStorage.token = '04948fcc522779e171384c12eadef82e3b106bb6'
       var response = await fetch(this.$api_host+"api/trade/good/", {
         method: "GET",
         headers: {

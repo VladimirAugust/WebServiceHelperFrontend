@@ -20,142 +20,16 @@
               <div class="column-root-rGwbF cascader-table-row-container-Ri1mQ width-width-flex-9-VuMI1 column-has_width-YQuuR">
                 <div class="cascader-table-row-KJppb">
                   <div class="cascader-table-column-y0L3b">
-                    <div class="cascader-table-title-L2EY1 text-text-OBRYG text-size-xs-vKAbG text-color-noaccent-i9Md_">Категория</div>
-                    <div v-for="cat in levels[0]" :key="cat.id" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">{{cat.name}}</div>
-
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 cascader-table-category_active-uM2WV text-text-OBRYG text-size-s-m5aJE">
-                      Электроника
-                    </div>
-
+                    <div v-for="cat in levels[0]" :key="cat.id" @click="lvl_select(0, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[0] && cat.id === selected[0].id }">{{cat.name}}</div>
                   </div>
-                  <div v-if="levels[1]!==null" class="cascader-table-column-y0L3b">
-                    <div
-                        class="cascader-table-title-L2EY1 text-text-OBRYG text-size-xs-vKAbG text-color-noaccent-i9Md_">
-                      Электроника
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 cascader-table-category_active-uM2WV text-text-OBRYG text-size-s-m5aJE">
-                      Аудио и видео
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Игры, приставки и
-                      программы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Настольные компьютеры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Ноутбуки
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Оргтехника и расходники
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Планшеты и электронные
-                      книги
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Телефоны
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Товары для компьютера
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Фототехника
-                    </div>
+                  <div v-if="levels[1].length > 0" class="cascader-table-column-y0L3b">
+                    <div v-for="cat in levels[1]" :key="cat.id" @click="lvl_select(1, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[1] && cat.id === selected[1].id }">{{cat.name}}</div>
                   </div>
-                  <div v-if="levels[2]!==null" class="cascader-table-column-y0L3b">
-                    <div
-                        class="cascader-table-title-L2EY1 text-text-OBRYG text-size-xs-vKAbG text-color-noaccent-i9Md_">
-                      Аудио и видео
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">MP3-плееры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Акустика, колонки,
-                      сабвуферы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Видео, DVD и Blu-ray
-                      плееры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Видеокамеры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Кабели и адаптеры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Микрофоны
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Музыка и фильмы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Музыкальные центры,
-                      магнитолы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Наушники
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Телевизоры и проекторы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 cascader-table-category_active-uM2WV text-text-OBRYG text-size-s-m5aJE">
-                      Усилители и ресиверы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Аксессуары
-                    </div>
+                  <div v-if="levels[2].length > 0" class="cascader-table-column-y0L3b">
+                    <div v-for="cat in levels[2]" :key="cat.id" @click="lvl_select(2, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[2] && cat.id === selected[2].id }">{{cat.name}}</div>
                   </div>
-                  <div v-if="levels[3]!==null" class="cascader-table-column-y0L3b">
-                    <div
-                        class="cascader-table-title-L2EY1 text-text-OBRYG text-size-xs-vKAbG text-color-noaccent-i9Md_">
-                      Аудио и видео
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">MP3-плееры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Акустика, колонки,
-                      сабвуферы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Видео, DVD и Blu-ray
-                      плееры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Видеокамеры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Кабели и адаптеры
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Микрофоны
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Музыка и фильмы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Музыкальные центры,
-                      магнитолы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Наушники
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Телевизоры и проекторы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 cascader-table-category_active-uM2WV text-text-OBRYG text-size-s-m5aJE">
-                      Усилители и ресиверы
-                    </div>
-                    <div data-marker="category-wizard/button"
-                         class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE">Аксессуары
-                    </div>
+                  <div v-if="levels[3].length > 0" class="cascader-table-column-y0L3b">
+                    <div v-for="cat in levels[3]" :key="cat.id" @click="lvl_select(3, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[3] && cat.id === selected[3].id }">{{cat.name}}</div>
                   </div>
                 </div>
               </div>
@@ -173,12 +47,16 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
   name: "GoodCategoryChooser",
   data() {
     return {
       "error_text": '',
-      "levels": [null, null, null, null]
+      "all_categories": null,
+      "levels": [[], [], [], []],
+      "selected": [null, null, null, null],
     }
   },
   async mounted() {
@@ -196,10 +74,25 @@ export default {
     if (await response.status === 200) {
       const data = await response.json()
       console.log("Cat data", data);
-      this.levels[0] = data;
+      this.all_categories = data;
+      Vue.set(this.levels, 0, data)
     } else {
       this.error_text = 'Не удалось загрузить категории. Обновите страницу или обратитесь в поддержку'
     }
+  },
+  methods: {
+    lvl_select(from_lvl, cat) {
+      console.log("From lvl " + from_lvl + "\tCat = " + cat)
+      Vue.set(this.selected, from_lvl, cat);
+      Vue.set(this.levels, from_lvl+1, cat.children);
+      for (let i = from_lvl+1; i < 4; i++) {
+        Vue.set(this.selected, i, null);
+      }
+      for (let i = from_lvl+2; i < 4; i++) {
+        Vue.set(this.levels, i, []);
+      }
+
+    },
   }
 }
 </script>
@@ -301,9 +194,9 @@ export default {
   color: #000;
 }
 
-.cascader-table-category_active-uM2WV,
-.cascader-table-category_active-uM2WV:focus,
-.cascader-table-category_active-uM2WV:hover {
+.active,
+.active:focus,
+active:hover {
   background-color: #0af;
   color: #fff;
 }
