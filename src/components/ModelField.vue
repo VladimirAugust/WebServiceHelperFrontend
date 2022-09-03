@@ -33,6 +33,9 @@
     <td v-else-if="type==='checkbox'">
       <input type="checkbox" v-model="value" @change="$emit('update:value', value);">
     </td>
+    <td v-else-if="type==='custom'">
+      <slot/>
+    </td>
     <td><p class="text-danger">{{error_text}}</p></td>
   </tr>
 

@@ -6,22 +6,11 @@
     <table class="table">
 
         <ModelField ref="name" label="Название" :value.sync="good.name" :editable="allow_edit" :error_text="errors.name"/>
-        <ModelField label="Категория" v-bind:editable="allow_edit" :error_text="errors.category">
 
-            <select name="category" required id="id_category">
-              <option value="">---------</option>
-
-              <option value="1" selected>Товары</option>
-
-              <option value="2">Услуги</option>
-
-              <option value="3">Товары &gt; Для дома</option>
-
-              <option value="4">Товары &gt; Для дома &gt; Пылесосы</option>
-
-            </select>
-
-        </ModelField>
+      <tr>
+        <th><p class="text-end">Категория:</p></th>
+        <td><GoodCategoryChooser/></td>
+      </tr>
 
         <ModelField label="Статус" :value="good_state"/>
 
@@ -37,7 +26,7 @@
         <ModelField label="Контакты" :value.sync="good.contacts" :editable="allow_edit" type="textarea" :error_text="errors.contacts"/>
 
         <tr>
-          <th><label>Фотографии</label></th>
+          <th><p class="text-end">Фотографии:</p></th>
           <td>
             <UploadMedia
                 v-if="action==='new'"
@@ -81,11 +70,12 @@ import ModelField from "@/components/ModelField";
 import $ from "jquery";
 import UpdateMedia from "@/components/UpdateMedia";
 import UploadMedia from "@/components/UploadMedia";
+import GoodCategoryChooser from "@/components/GoodCategoryChooser";
 
 
 export default {
   name: "GoodPage",
-  components: {ModelField, UploadMedia, UpdateMedia },
+  components: {ModelField, UploadMedia, UpdateMedia, GoodCategoryChooser },
   data(){
     return {
       "good": {},
