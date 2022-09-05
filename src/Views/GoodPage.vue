@@ -9,7 +9,7 @@
 
       <tr>
         <th><p class="text-end">Категория:</p></th>
-        <td><GoodCategoryChooser/></td>
+        <td><GoodCategoryChooser :value.sync="good.category" :editable="allow_edit"/></td>
       </tr>
 
         <ModelField label="Статус" :value="good_state"/>

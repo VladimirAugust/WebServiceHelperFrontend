@@ -1,6 +1,7 @@
 <template>
   <div>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <p>{{ category_display }}</p>
+    <button v-if="editable" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Выбрать
     </button>
 
@@ -14,27 +15,25 @@
           </div>
           <div class="modal-body">
             <p v-if="error_text!==''">{{ error_text }}</p>
-
-
+            
             <div v-else class="row-root-qvv64 cascader-table-root-lxy9B row-root_padding_none-u_e1C" data-marker="category-wizard">
               <div class="column-root-rGwbF cascader-table-row-container-Ri1mQ width-width-flex-9-VuMI1 column-has_width-YQuuR">
                 <div class="cascader-table-row-KJppb">
                   <div class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[0]" :key="cat.id" @click="lvl_select(0, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[0] && cat.id === selected[0].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[0].sort(categories_cmp)" :key="cat.id" @click="lvl_select(0, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[0] && cat.id === selected[0].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[1].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[1]" :key="cat.id" @click="lvl_select(1, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[1] && cat.id === selected[1].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[1].sort(categories_cmp)" :key="cat.id" @click="lvl_select(1, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[1] && cat.id === selected[1].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[2].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[2]" :key="cat.id" @click="lvl_select(2, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[2] && cat.id === selected[2].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[2].sort(categories_cmp)" :key="cat.id" @click="lvl_select(2, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[2] && cat.id === selected[2].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[3].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[3]" :key="cat.id" @click="lvl_select(3, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[3] && cat.id === selected[3].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[3].sort(categories_cmp)" :key="cat.id" @click="lvl_select(3, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[3] && cat.id === selected[3].id }">{{cat.name}}</div>
                   </div>
                 </div>
               </div>
             </div>
-
 
           </div>
           <div class="modal-footer">
@@ -51,12 +50,17 @@ import Vue from "vue";
 
 export default {
   name: "GoodCategoryChooser",
+  props: {
+    value: Number,
+    editable: Boolean,
+  },
   data() {
     return {
       "error_text": '',
       "all_categories": null,
       "levels": [[], [], [], []],
       "selected": [null, null, null, null],
+      "selected_cat_name": null,
     }
   },
   async mounted() {
@@ -82,7 +86,7 @@ export default {
   },
   methods: {
     lvl_select(from_lvl, cat) {
-      console.log("From lvl " + from_lvl + "\tCat = " + cat)
+      // console.log("From lvl " + from_lvl + "\tCat = " + cat)
       Vue.set(this.selected, from_lvl, cat);
       Vue.set(this.levels, from_lvl+1, cat.children);
       for (let i = from_lvl+1; i < 4; i++) {
@@ -91,8 +95,40 @@ export default {
       for (let i = from_lvl+2; i < 4; i++) {
         Vue.set(this.levels, i, []);
       }
-
+      this.$emit('update:value', cat.id);
+      this.selected_cat_name = cat.name;
     },
+    _find_cat_name_by_id(id_to_find) {
+      if (!this.all_categories) {
+        return "загрузка...";
+      }
+      const cat_name = this._recursive_find_cat_name_by_id(id_to_find, this.all_categories);
+      return cat_name ? cat_name : "(данной категории уже не существует, выберите ещё раз)";
+    },
+    _recursive_find_cat_name_by_id(id_to_find, parent_nodes) {
+      for (let cat of parent_nodes) {
+        // console.log(">>> ",parent_nodes, cat);
+        if (cat.id === id_to_find) {
+          return cat.name;
+        } else {
+          const res = this._recursive_find_cat_name_by_id(id_to_find, cat.children);
+          if (res) return res;
+        }
+      }
+      return null;
+    },
+    categories_cmp(a, b) {
+      return b.sort_order - a.sort_order;
+    }
+  },
+  computed: {
+    category_display() {
+      if (this.selected_cat_name) {
+        return this.selected_cat_name;
+      } else {
+        return this._find_cat_name_by_id(this.value);
+      }
+    }
   }
 }
 </script>
