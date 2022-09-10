@@ -1,6 +1,6 @@
 <template>
   <div class="container-sm" style="margin-top: 4rem">
-    <h2 style="text-align: center">Регистрация</h2>
+    <h2 style="text-align: center">Вход</h2>
     <hr>
     <form @submit.prevent="register" style="margin-top: 2rem">
     <p>
@@ -32,8 +32,8 @@ export default {
       })
       this.response_json = await this.response.json()
       if (await this.response.status === 200){
-        console.log(this.response_json)
         localStorage.token = this.response_json["token"]
+        this.$emit("LoginAuth")
         this.$router.push("/settings")
     
       }else if (await this.response.status === 400){

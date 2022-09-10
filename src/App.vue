@@ -6,33 +6,29 @@
           <a class="navbar-brand">
             <img src="https://getbootstrap.com/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24">
           </a>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent" v-if="user_data['is_signed_up']">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link active" aria-current="page" v-on:click="push_user_page" id="profile">Мой профиль</a>
               </li>
-
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" v-on:click="push_user_goods" id="my-goods">Мои товары/услуги</a>
+              </li>
             </ul>
-            <form class="d-flex">
+            <span class="navbar-text">{{ user_data["balance"] }} даров</span>
+          </div>
+          <form class="form-inline">
               <div v-if="!user_data['is_signed_up']">
-                <a v-on:click="push_login_page" class="auth-button">Sign In</a>
+                <a v-on:click="push_login_page" class="auth-button">Войти</a>
+                <a v-on:click="push_register_page" class="auth-button">Зарегестрироваться</a>
               </div>
               <div v-else>
-                <div class="dropdown">
-                  <img :src="user_data['avatar_url']" alt="image" class="profile-image">
-                  <button class="btn btn-secondary dropdown-toggle username-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ user_data["username"] }}
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" v-on:click="push_user_page">Мой профиль</a></li>
-                    <li><a class="dropdown-item" v-on:click="push_user_goods">Мои товары/услуги</a></li>
-                    <li><a class="dropdown-item" v-on:click="UserExit">Выйти</a></li>
-                    <!-- <li><a class="dropdown-item" href="#" v-on:click="logout">Выйти</a></li> -->
-                  </ul>
-                </div>
+                <a class="nav-link active" aria-current="page" v-on:click="UserExit">Выйти</a>
               </div>
             </form>
-          </div>
         </div>
       </nav>
     </header>
@@ -60,7 +56,8 @@ export default {
     },
     
     push_user_page(){
-      console.log("push")
+      document.getElementById("profile").classList.add("active")
+      document.getElementById("my-goods").classList.remove("active")
       this.$router.push({
         name: "UserPage",
         params: {
@@ -70,11 +67,19 @@ export default {
     },
 
     push_user_goods(){
+      document.getElementById("profile").classList.remove("active")
+      document.getElementById("my-goods").classList.add("active")
       this.$router.push({
         name: "MyGoodsPage",
         params: {
           "pk": this.user_data["pk"]
         }
+      })
+    },
+
+    push_register_page(){
+      this.$router.push({
+        "name": "RegisterPage"
       })
     },
 

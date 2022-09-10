@@ -3,7 +3,7 @@
     <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
         <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" :src="userData['avatar']" ><span class="font-weight-bold">{{userData["username"]}}</span><span class="text-black-50">{{userData["email"]}}</span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="avatar-image mt-5" width="150px" :src="userData['avatar']" ><span class="font-weight-bold">{{userData["username"]}}</span><span class="text-black-50">{{userData["email"]}}</span><span> </span></div>
             <div class="input-group">
         <input class="form-control" type="file" id="formFileMultiple" accept="image/*" multiple>
         </div>
@@ -15,28 +15,17 @@
                     <h4 class="text-right">Общие настройки</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" id="FirstNameInput" placeholder="first name" value=""></div>
-                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" id="LastNameInput" value="" placeholder="surname"></div>
+                    <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" id="FirstNameInput" placeholder="Имя" value=""></div>
+                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" id="LastNameInput" value="" placeholder="Фамилия"></div>
                 </div>
                 <div class="row mt-3"> 
-                    <div class="col-md-12" id="phone_number"><label class="labels">Mobile Number</label><span class="required">*</span><input type="tel" id="telInput" data-tel-input class="form-control" placeholder="enter phone number" value=""></div>
+                    <div class="col-md-12" id="phone_number"><label class="labels">Mobile Number</label><span class="required">*</span><input type="tel" id="telInput" data-tel-input class="form-control" placeholder="Введите номер телефона" value=""></div>
                     <div class="col-md-12" id="city"><label class="labels">Город</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш город" id="CityInput" value=""></div>
                     <div class="col-md-12" id="district"><label class="labels">Район</label><span class="required">*</span><input type="text" class="form-control" placeholder="Введите ваш район" id="DiscrictInput" value=""></div>
                 </div>
                 <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" v-on:click="change_settings">Save Profile</button></div>
             </div>
         </div>
-        <!-- <div class="col-md-4">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="text-right" style="text-align: center;">Настройки Пользователя</h4></div>
-                <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">Password</label><input type="password" class="form-control" placeholder="password" id="old_password" value=""></div>
-                    <div class="col-md-6"><label class="labels">New Password</label><input type="password" class="form-control" value="" id="new_password" placeholder="new password"></div>
-                    
-                </div>
-                <div class="d-flex justify-content-center mt-4 align-items-center experience "><span class="border px-3 p-1 add-experience" v-on:click="change_password">Изменить пароль</span></div><br>
-            </div>
-        </div> -->
     </div>
     
 </div>
@@ -149,27 +138,6 @@ export default ({
             window.location.reload();
         },
 
-        // async change_password() {
-        //     var old_password = document.getElementById("old_password").value
-        //     var new_password = document.getElementById("new_password").value
-
-        //     var response = await fetch(this.$api_host+"api/password/change", {
-        //         method: "PATCH",
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             "Authorization": "Token " + localStorage.token
-        //         },
-        //         body: JSON.stringify({
-        //             "old_password": old_password,
-        //             "new_password": new_password
-        //         })
-        //     })
-
-        //     if (await response.status === 200){
-        //         alert("Password succesefuly changed")
-        //     }
-        // },
-
         async load_settings() {
             var response = await fetch(this.$api_host+"api/settings", {
                 method: "GET",
@@ -261,6 +229,12 @@ body {
     background: rgb(99, 39, 120);
     box-shadow: none;
     border: none
+}
+
+.avatar-image {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
 }
 
 .profile-button:hover {
