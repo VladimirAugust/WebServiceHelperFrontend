@@ -15,21 +15,21 @@
           </div>
           <div class="modal-body">
             <p v-if="error_text!==''">{{ error_text }}</p>
-            
+
             <div v-else class="row-root-qvv64 cascader-table-root-lxy9B row-root_padding_none-u_e1C" data-marker="category-wizard">
               <div class="column-root-rGwbF cascader-table-row-container-Ri1mQ width-width-flex-9-VuMI1 column-has_width-YQuuR">
                 <div class="cascader-table-row-KJppb">
                   <div class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[0].sort(categories_cmp)" :key="cat.id" @click="lvl_select(0, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[0] && cat.id === selected[0].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[0]" :key="cat.id" @click="lvl_select(0, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[0] && cat.id === selected[0].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[1].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[1].sort(categories_cmp)" :key="cat.id" @click="lvl_select(1, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[1] && cat.id === selected[1].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[1]" :key="cat.id" @click="lvl_select(1, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[1] && cat.id === selected[1].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[2].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[2].sort(categories_cmp)" :key="cat.id" @click="lvl_select(2, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[2] && cat.id === selected[2].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[2]" :key="cat.id" @click="lvl_select(2, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[2] && cat.id === selected[2].id }">{{cat.name}}</div>
                   </div>
                   <div v-if="levels[3].length > 0" class="cascader-table-column-y0L3b">
-                    <div v-for="cat in levels[3].sort(categories_cmp)" :key="cat.id" @click="lvl_select(3, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[3] && cat.id === selected[3].id }">{{cat.name}}</div>
+                    <div v-for="cat in levels[3]" :key="cat.id" @click="lvl_select(3, cat)" data-marker="category-wizard/button" class="cascader-table-category-Ej4H0 text-text-OBRYG text-size-s-m5aJE" :class="{ active: selected[3] && cat.id === selected[3].id }">{{cat.name}}</div>
                   </div>
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default {
     })
 
     if (await response.status === 200) {
-      const data = await response.json()
+      let data = await response.json()
       console.log("Cat data", data);
       this.all_categories = data;
       Vue.set(this.levels, 0, data)

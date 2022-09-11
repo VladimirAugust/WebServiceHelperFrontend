@@ -2,6 +2,7 @@
   <div class="container-sm" style="margin-top: 4rem">
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link" type="button" @click="$router.push('/good/new')">Создать новый товар/услугу</button>
         <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1" aria-selected="true">Опубликованные</button>
         <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button" role="tab" aria-controls="nav-2" aria-selected="false">Черновики</button>
         <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button" role="tab" aria-controls="nav-3" aria-selected="false">На модерации</button>
