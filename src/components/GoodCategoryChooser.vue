@@ -97,6 +97,7 @@ export default {
       }
       this.$emit('update:value', cat.id);
       this.selected_cat_name = cat.name;
+      this.$emit('is_service', cat.is_service);
     },
     _find_cat_name_by_id(id_to_find) {
       if (!this.all_categories) {
@@ -117,9 +118,6 @@ export default {
       }
       return null;
     },
-    categories_cmp(a, b) {
-      return b.sort_order - a.sort_order;
-    }
   },
   computed: {
     category_display() {

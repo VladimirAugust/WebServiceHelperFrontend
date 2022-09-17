@@ -9,7 +9,7 @@
 
       <tr>
         <th><p class="text-end">Категория:</p></th>
-        <td><GoodCategoryChooser :value.sync="good.category" :editable="allow_edit"/></td>
+        <td><GoodCategoryChooser :value.sync="good.category" @is_service="(is) => good.is_service = is" :editable="allow_edit"/></td>
       </tr>
 
         <ModelField label="Статус" :value="good_state"/>
@@ -18,7 +18,7 @@
 
         <ModelField label="Описание" :value.sync="good.description" :editable="allow_edit" type="textarea" :error_text="errors.description"/>
 
-        <ModelField label="Состояние товара" :value.sync="good.condition" :editable="allow_edit" type="select" :options="get_condition_options()" :error_text="errors.condition"/>
+        <ModelField v-if="!good.is_service" label="Состояние товара" :value.sync="good.condition" :editable="allow_edit" type="select" :options="get_condition_options()" :error_text="errors.condition"/>
 
         <ModelField label="Стоимость, ₽" :value.sync="good.price_currency" :editable="allow_edit" type="cost-optional" :error_text="errors.price_currency"/>
         <ModelField label="Стоимость в дарах" :value.sync="good.price_gifts" :editable="allow_edit" type="cost-optional" :error_text="errors.price_gifts"/>
