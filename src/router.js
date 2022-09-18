@@ -7,12 +7,18 @@ import UserPage from './components/UserPage'
 import UserSettingsPage from './components/UserSettingsPage'
 import MyGoodsPage from "@/Views/MyGoodsPage";
 import GoodPage from "@/Views/GoodPage";
+import Home from "./components/Home";
 
 Vue.use(Router)
 
 export default new Router({
     mode: 'history',
     routes: [{
+            path: '',
+            component: Home,
+            name: 'Home'
+        },
+        {
             path: '/register',
             component: Register,
             name: "RegisterPage"
